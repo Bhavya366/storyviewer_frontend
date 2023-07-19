@@ -1,0 +1,111 @@
+.addstory-popup{
+    position: fixed;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0, 0, 0, 0.5);
+}
+.add-form-slides{
+    background-color: white;
+    padding: 3%;
+    border-radius: 10px;
+    width: 50%;
+    @media (max-width: 700px) {
+        width: 70%;
+    }
+}
+.both-slides-form{
+    display: flex;
+    flex-direction: column;
+    @media (max-width: 700px) {
+        flex-direction: row;
+    }
+}
+.n-slides{
+    display: flex;
+    justify-content: space-evenly;
+    @media (max-width: 700px) {
+        flex-direction: column;
+    }
+}
+.n-slides button:hover {
+    cursor: pointer;
+}
+.label-input{
+    display: flex;
+
+    @media (max-width: 700px) {
+        flex-direction:column ;
+    }
+}
+.label-input .inputs-form{
+    width: 70%;
+    @media (max-width: 700px) {
+        width: 100%;
+    }
+}
+.each-slide{
+    box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.10);
+    padding: 3% 3%;
+    border-radius: 6px;
+    pointer-events:cursor;
+}
+.each-slide-selected{
+    box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.10);
+    padding: 3% 3%;
+    border-radius: 6px;
+    pointer-events:cursor;
+    border: 2px solid #73ABFF;;
+}
+.addstory-label-input{
+    margin-left: 10%;
+
+}
+.addstory-inputs{
+    text-align: left;
+    outline:none;
+    margin-left: 6%;
+    width: 60%;
+    border: 1.5px solid black;
+    padding: 1%;
+    @media (max-width: 700px) {
+        margin-left: 0%;
+    }
+}
+
+.addstory-form-buttons{
+    display: flex;
+    margin-left:10%;
+    justify-content: space-between;
+    width: 90%;
+}
+.previous-next-buttons{
+    display: flex;
+    width: 30%;
+    justify-content: space-between;
+}
+.addstory-form-buttons button{
+    border-radius: 20px;
+    padding: 10px 25px;
+    color: white;
+    border: none;
+    @media (max-width: 700px) {
+       padding: 5px 12px;
+    }
+}
+.previous-button{
+    background-color: #7EFF73;
+    margin-right: 10px;
+}
+.next-button{
+    background-color: #73ABFF;
+}
+.submit-button{
+    background-color: #FF7373;
+    padding: 10px 15px;
+}

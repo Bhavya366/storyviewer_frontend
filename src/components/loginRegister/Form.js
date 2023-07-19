@@ -7,11 +7,12 @@ import useStoryContext from "../../hooks/useStoryContext";
 import './Form.css';
 
 const Form = (props) => {
+    
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const { setPopup, setLoggedIn,setUser} = useStoryContext();
+    const { setPopup, setLoggedIn,setUser,change,setChange} = useStoryContext();
     const [error,setError] = useState("");
-    const [showicon,setShowIcon] = useState(false);
+    
     const handlePassowrdChange = (e) => {
         setPassword(e.target.value);
     };
@@ -30,6 +31,7 @@ const Form = (props) => {
             const response = await axios.post(`http://localhost:4500/${props.mode}`, data);
             localStorage.setItem("token", response.data.token);
             console.log(response.data)
+            setChange(!change)
             toast.success(`${props.text} Successfull`, {
                 position: "top-center",
                 autoClose: 1000,
@@ -42,7 +44,6 @@ const Form = (props) => {
 
         } catch (err) {
             console.log(err)
-           
             if (err.response.status != 201 || err.response.status != 200) {
                 toast.error("Invalid Credentials", {
                     position: "top-center",

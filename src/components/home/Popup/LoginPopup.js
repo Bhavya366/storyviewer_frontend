@@ -18,6 +18,7 @@ const LoginPopup = () => {
         <div className="popup">
             {LogginPopUp?<Form  mode = "login" text = "Login"/>:""}
             {RegisterPopUp?<Form mode = "register" text = "Register" />:""}
+            {/* {AddForm} */}
         </div>
     );
 };

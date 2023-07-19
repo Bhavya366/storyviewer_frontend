@@ -3,11 +3,13 @@ import "./Navbar.css";
 import useStoryContext from "../../../hooks/useStoryContext";
 import profile from '../../../assets/profile.png'
 import hamburger from '../../../assets/hamburger.png'
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
  
-  const { loggedIn, setLoggedIn, popup, setPopup, RegisterPopUp, setRegisterPopUp, LogginPopUp, setLogginPopUp, user, setUser, logout, setLogout } = useStoryContext();
-  const [showMobile,setShowMobile] = useState(false)
+  const { loggedIn, setLoggedIn, setPopup, setRegisterPopUp, setLogginPopUp, user, setUser, logout, setLogout,setAddFormPopup,setId} = useStoryContext();
+  const navigate = useNavigate();
   useEffect(() => {
     if (localStorage.getItem("token")) {
       setLoggedIn(true);
@@ -19,37 +21,45 @@ const Navbar = () => {
     setLogginPopUp(true);
     setRegisterPopUp(false);
   };
-
-  const logoutHeader = () => {
-    localStorage.removeItem("token");
-    setLoggedIn(false);
-  };
-
   const onNavbarSignup = () => {
     setPopup(true);
     setRegisterPopUp(true);
     setLogginPopUp(false);
   };
+  const AddStory = () =>{
+    let data={}
+    data.user = user;
+    axios.post('http://localhost:4500/story',data,{
+			headers: {
+			  authorization: `${localStorage.getItem("token")}`,
+		}}).then((response) => setId(response.data.id)).catch((err)=>console.log(err))
+    setPopup(true);
+    setRegisterPopUp(false);
+    setLogginPopUp(false)
+    setAddFormPopup(true);
+  }
+
+  
 
   return (
     <>
       <div className="navbar">
         <span>SwipTory</span>
-        {loggedIn ? (
+        {loggedIn ? 
           <div className="navbar-buttons">
-            <button className="loggedin-register-button" onClick={logoutHeader}>
+            <button className="loggedin-register-button" onClick={()=>navigate('bookmark')}>
               Bookmarks
             </button>
-            <button className="loggedin-register-button" onClick={logoutHeader}>
+            <button className="loggedin-register-button" onClick={AddStory}>
               Add Story
             </button>
             <img className="img"
               src={profile}
               alt="user"
             />
-            <img src={hamburger} alt="hamburger" onClick={() => { setLogout(true) }} />
+            <img src={hamburger} alt="hamburger" onClick={()=>{setLogout(true)}} />
           </div>
-        ) : (
+         : 
           <div className="navbar-buttons">
             <button className="loggedin-register-button" onClick={onNavbarSignup}>
               Register Now
@@ -58,13 +68,14 @@ const Navbar = () => {
               Sign In
             </button>
           </div>
-        )}
+        }
       </div> 
 
       {logout ? <div className="logout">
         <p>{user}</p>
         <button onClick={() => {
           setUser("")
+          localStorage.removeItem("token");
           setLoggedIn(false)
           setLogout(false)
         }}>Logout</button>

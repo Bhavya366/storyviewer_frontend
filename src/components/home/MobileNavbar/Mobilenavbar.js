@@ -2,11 +2,14 @@ import React, { useState,useEffect } from 'react';
 import hamburger from '../../../assets/hamburger.png'
 import useStoryContext from "../../../hooks/useStoryContext";
 import profile from '../../../assets/profile.png';
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 const Mobilenavbar = () => {
 
     const [showMobile, setShowMobile] = useState(false);
-    const { loggedIn, setLoggedIn, popup, setPopup, RegisterPopUp, setRegisterPopUp, LogginPopUp, setLogginPopUp, user, setUser, logout, setLogout } = useStoryContext();
+    const { loggedIn, setLoggedIn, popup, setPopup, RegisterPopUp, setRegisterPopUp, LogginPopUp, setLogginPopUp, user, setUser, logout, setLogout,id ,setAddFormPopup,setId} = useStoryContext();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (localStorage.getItem("token")) {
@@ -20,6 +23,19 @@ const Mobilenavbar = () => {
         setRegisterPopUp(false);
     };
 
+    const AddStory = () =>{
+        let data={}
+        data.user = user;
+        axios.post('http://localhost:4500/story',data,{
+			headers: {
+			  authorization: `${localStorage.getItem("token")}`,
+		}}).then((response) => setId(response.data.id)).catch((err)=>console.log(err))
+        
+        setPopup(true);
+        setRegisterPopUp(false);
+        setLogginPopUp(false)
+        setAddFormPopup(true);
+      }
     const logoutHeader = () => {
         localStorage.removeItem("token");
         setLoggedIn(false);
@@ -46,19 +62,20 @@ const Mobilenavbar = () => {
 
 
             {showMobile && loggedIn ? <div className="mobile-show-buttons">
+                
                 <div className='mobileview-profile'>
                     <img src={profile} alt="user" />
                     <span>{user}</span>
                     <div className="mobile-into" onClick={() => { setShowMobile(false) }}>x</div>
                 </div>
                 
-                <button className="loggedin-register-button" onClick={logoutHeader}>
+                <button className="loggedin-register-button" onClick={()=>navigate('mystory')}>
                     Your Story
                 </button><br></br>
-                <button className="loggedin-register-button" onClick={logoutHeader}>
+                <button className="loggedin-register-button" onClick={AddStory}>
                     Add Story
                 </button><br></br>
-                <button className="loggedin-register-button" onClick={logoutHeader}>
+                <button className="loggedin-register-button" onClick={()=>navigate('bookmark')}>
                     Bookmarks
                 </button><br></br>
                 <button className="loggedin-register-button" onClick={logoutHeader}>
