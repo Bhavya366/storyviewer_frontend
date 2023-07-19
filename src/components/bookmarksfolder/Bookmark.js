@@ -20,7 +20,7 @@ const Bookmark = () => {
 
     const { popup,AddFormPopup,loggedIn} = useStoryContext();
     useEffect(()=>{
-        axios.get("http://localhost:4500/slide/getbookmarks")
+        axios.get("https://swiptory-u41l.onrender.com/slide/getbookmarks")
         .then((response)=>{setSlides(response.data)})
         .catch((err)=>{console.log("No data available")})
     },[])
@@ -37,7 +37,7 @@ const Bookmark = () => {
             slides.map((item,index)=>{
                 return (
                     <div key={index} className='img-each-slide' style={{backgroundImage:`url(${item.imageLink})`}} onClick={()=>{
-                        axios.get(`http://localhost:4500/slide/getSlides?storyId=${item.storyId}`)
+                        axios.get(`https://swiptory-u41l.onrender.com/slide/getSlides?storyId=${item.storyId}`)
                         .then((response)=>{
                             setStory(response.data) 
                             setCarousel(true);               

@@ -4,6 +4,8 @@ import { Provider } from "./context/StoryContext";
 import MainPage from './components/home/MainPage';
 import Bookmark from './components/bookmarksfolder/Bookmark';
 import AllMobileViewStories from './components/home/MobileNavbar/AllMobileViewStories';
+import Notfound from './components/notfound/Notfound';
+import Health from './components/health/Health';
 
 function App() {
   return (
@@ -15,8 +17,8 @@ function App() {
               <Route path="/" element={<MainPage />} />
               <Route path="/bookmark" element = {<Bookmark />}  />
               <Route path="/mystory" element = {<AllMobileViewStories/>} />
-              {/* <Route path="/health" element={<Health />} /> */}
-              {/* <Route path="*" element={<NotFound />} /> */}
+              <Route path="/health" element={<Health />} />
+              <Route path="*" element={<Notfound />} />
             </Routes>
           </Router>
         </div>

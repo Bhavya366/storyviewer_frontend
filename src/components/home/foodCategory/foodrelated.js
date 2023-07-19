@@ -12,7 +12,7 @@ const Foodrelated = forwardRef((props,ref) => {
     const [seemore, setSeemore] = useState(false);
 
     useEffect(() => {
-        axios.get(`http://localhost:4500/slide/getFilteredCategory?category=${props.category}`)
+        axios.get(`https://swiptory-u41l.onrender.com/slide/getFilteredCategory?category=${props.category}`)
             .then((response) => {
                 setSlides(response.data.slide);
             })
@@ -38,7 +38,7 @@ const Foodrelated = forwardRef((props,ref) => {
                         slides.map((item, index) => {
                             return (
                                 <div key={index} className='img-each-firstslide' style={{ backgroundImage: `url(${item.imageLink})` }} onClick={() => {
-                                    axios.get(`http://localhost:4500/slide/getFilteredCategory?category=${item.category}`)
+                                    axios.get(`https://swiptory-u41l.onrender.com/slide/getFilteredCategory?category=${item.category}`)
                                         .then((response) => {
 
                                             console.log(response.data.slide);
@@ -72,7 +72,7 @@ const Foodrelated = forwardRef((props,ref) => {
                             (slides.slice(0, 3)).map((item, index) => {
                                 return (
                                     <div key={index} className='img-each-firstslide' style={{ backgroundImage: `url(${item.imageLink})` }} onClick={() => {
-                                        axios.get(`http://localhost:4500/slide/getFilteredCategory?category=${item.category}`)
+                                        axios.get(`https://swiptory-u41l.onrender.com/slide/getFilteredCategory?category=${item.category}`)
                                             .then((response) => {
 
                                                 console.log(response.data.slide);

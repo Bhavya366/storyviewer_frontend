@@ -112,7 +112,7 @@ const AddStory = () => {
 				});
 				return;
 			}
-			 axios.post(`http://localhost:4500/slide`, data, {
+			 axios.post(`https://swiptory-u41l.onrender.com/slide`, data, {
 				headers: {
 					authorization: `${localStorage.getItem("token")}`,
 				},

@@ -19,7 +19,7 @@ const AllCategories = () => {
     
     const arr = []
     useEffect(()=>{
-        axios.get('http://localhost:4500/slide')
+        axios.get('https://swiptory-u41l.onrender.com/slide')
         .then((response)=>setCategories(response.data.categories))
         .catch((err)=>{console.log(err)})
     },[])    

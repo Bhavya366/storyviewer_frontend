@@ -8,6 +8,10 @@
     background: #fff;
     box-shadow: 0px 4px 15px 15px rgba(0, 0, 0, 0.15);
     position:sticky;
+    @media screen and (max-width: 500px) and (min-width: 200px)  {
+      width: 100vw;
+    }
+
 }
 .navbar > span {
     color: black;

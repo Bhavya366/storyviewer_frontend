@@ -16,7 +16,7 @@ const Carousel = (props) => {
 
     const increaseLike = () => {
         try {
-            const response = axios.put(`http://localhost:4500/slide/${data[slide]._id}/like`)
+            const response = axios.put(`https://swiptory-u41l.onrender.com/slide/${data[slide]._id}/like`)
                 .then((response) => {
                     setData([
                         ...data.slice(0, slide),
@@ -34,7 +34,7 @@ const Carousel = (props) => {
     const setBooked = ()=>{
         try {
            
-            const response = axios.put(`http://localhost:4500/slide/${data[slide]._id}/bookmarks`)
+            const response = axios.put(`https://swiptory-u41l.onrender.com/slide/${data[slide]._id}/bookmarks`)
                 .then((response) => { 
                     console.log(response.data)
                     setData([
@@ -47,7 +47,7 @@ const Carousel = (props) => {
             console.log(error);
         }
     }
-    
+
     const nextSlide = () => {
         setSlide(slide === data.length - 1 ? 0 : slide + 1);
         setClipboardMessage(false);

@@ -25,7 +25,7 @@ const MainPage = () => {
       {popup && AddFormPopup && loggedIn ?<AddStory />:""}
       {popup && edit && loggedIn ? <EditStory />:''}
       <AllCategories />
-      {loggedIn ? <>
+      {loggedIn  && isDesktopOrLaptop ? <>
         <AllStories />
       </>:""}
       <MainCategory />

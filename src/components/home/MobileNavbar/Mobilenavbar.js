@@ -26,7 +26,7 @@ const Mobilenavbar = () => {
     const AddStory = () =>{
         let data={}
         data.user = user;
-        axios.post('http://localhost:4500/story',data,{
+        axios.post('https://swiptory-u41l.onrender.com/story',data,{
 			headers: {
 			  authorization: `${localStorage.getItem("token")}`,
 		}}).then((response) => setId(response.data.id)).catch((err)=>console.log(err))

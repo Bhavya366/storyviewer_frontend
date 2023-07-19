@@ -9,7 +9,7 @@ const AllStories = () => {
     
 
     useEffect(()=>{
-        axios.get(`http://localhost:4500/story?user=${user}`)
+        axios.get(`https://swiptory-u41l.onrender.com/story?user=${user}`)
         .then((response)=>{
             setStoryIds(response.data.unique)
             setFirstSlide(response.data.array)

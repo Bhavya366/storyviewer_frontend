@@ -28,7 +28,7 @@ const Form = (props) => {
             password,
         };
         try {
-            const response = await axios.post(`http://localhost:4500/${props.mode}`, data);
+            const response = await axios.post(`https://swiptory-u41l.onrender.com/${props.mode}`, data);
             localStorage.setItem("token", response.data.token);
             console.log(response.data)
             setChange(!change)

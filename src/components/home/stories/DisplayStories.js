@@ -4,9 +4,10 @@ import useStoryContext from "../../../hooks/useStoryContext";
 import Carousel from '../carouselfolder/Carousel'
 import './displaycarousel.css';
 import EditStory from '../../editform/EditStory';
-
+import { useMediaQuery } from 'react-responsive'
 const DisplayStories = () => {
 
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
     const { setCarousel, carousel, firstSlide, loggedIn, edit, setEdit ,story,setStory} = useStoryContext();
     
     const [datatoEdit, setDatatoEdit] = useState([]);
@@ -21,7 +22,7 @@ const DisplayStories = () => {
                             <div key={index}>
                                 <div className='img-each-firstslide' onClick={() => {
                                     
-                                    axios.get(`http://localhost:4500/slide/getSlides?storyId=${item.storyId}`)
+                                    axios.get(`https://swiptory-u41l.onrender.com/slide/getSlides?storyId=${item.storyId}`)
                                         .then((response) => {
                                             setStory(response.data)
                                             setCarousel(true);
@@ -50,7 +51,7 @@ const DisplayStories = () => {
                                         {loggedIn ? <button className='edit-btn' onClick={() => {
                                             setEdit(true)
                                             setCarousel(false);                                            
-                                            axios.get(`http://localhost:4500/slide/getSlides?storyId=${item.storyId}`)
+                                            axios.get(`https://swiptory-u41l.onrender.com/slide/getSlides?storyId=${item.storyId}`)
                                                 .then((response) => {
                                                     setDatatoEdit(response.data)
                                                     setCarousel(false);

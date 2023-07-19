@@ -72,7 +72,7 @@ const EditStory = (props) => {
 				return;
 			}
 			console.log(data)
-			axios.put(`http://localhost:4500/slide`, data, {
+			axios.put(`https://swiptory-u41l.onrender.com/slide`, data, {
 				headers: {
 					authorization: `${localStorage.getItem("token")}`,
 				},
