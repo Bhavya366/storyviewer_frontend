@@ -5,10 +5,8 @@
     width: 100vw;
     overflow-x: auto;
     padding: 10px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-
-  /* Hide scrollbar for Chrome, Safari, and Opera */
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
     &::-webkit-scrollbar {
         display: none;
     }
@@ -18,7 +16,7 @@
     display: none; 
 } 
   
-  /* Optional: Add scroll snapping effect */ */
+  
 .all-categories > * {
     scroll-snap-align: start;
 } 
