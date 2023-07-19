@@ -7,7 +7,7 @@ import useStoryContext from "../../hooks/useStoryContext";
 import './Form.css';
 
 const Form = (props) => {
-    
+    const [update,setUpdate] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const { setPopup, setLoggedIn,setUser,change,setChange} = useStoryContext();
@@ -81,11 +81,11 @@ const Form = (props) => {
                     <input
                         value={password}
                         onChange={handlePassowrdChange}
-                        type="password"
+                        type={update?"text":"password"}
                         placeholder="Enter password"
                         required
                     /><br></br>
-                    <img src={passwordlock} alt="" />
+                    <img src={passwordlock} alt=""  onClick={()=>setUpdate(true)}/>
                     </div>
                     
                 </div><br></br>

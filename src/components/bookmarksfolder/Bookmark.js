@@ -7,6 +7,7 @@ import LoginPopup from '../home/Popup/LoginPopup';
 import { useMediaQuery } from 'react-responsive'
 import axios from 'axios';
 import Carousel from '../home/carouselfolder/Carousel';
+
 import './bookmark.css';
 
 const Bookmark = () => {
@@ -21,7 +22,9 @@ const Bookmark = () => {
     const { popup,AddFormPopup,loggedIn} = useStoryContext();
     useEffect(()=>{
         axios.get("https://swiptory-u41l.onrender.com/slide/getbookmarks")
-        .then((response)=>{setSlides(response.data)})
+        .then((response)=>{
+            setSlides(response.data)
+        })
         .catch((err)=>{console.log("No data available")})
     },[])
 
@@ -60,7 +63,7 @@ const Bookmark = () => {
             })
             :""}
             </div>
-            {carousel ? <div className='carousel-class'><Carousel story={story}/></div>:""}
+            {carousel ? <div className='carousel-class'><Carousel story={story}/></div>:""}     
         </div>
     );
 };

@@ -78,6 +78,7 @@ const Navbar = () => {
           localStorage.removeItem("token");
           setLoggedIn(false)
           setLogout(false)
+          navigate('/')
         }}>Logout</button>
       </div> : ""}
     </>

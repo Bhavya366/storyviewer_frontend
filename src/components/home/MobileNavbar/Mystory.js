@@ -16,7 +16,7 @@ const Mystory = () => {
             <Mobilenavbar /><br></br><br></br>
             <center><h2>Your Stories</h2></center>
             <div className='all-firstslides'>
-                {firstSlide ?
+                {firstSlide ? 
                     firstSlide.map((item, index) => {
                         return (
                             <div key={index}>
@@ -35,14 +35,14 @@ const Mystory = () => {
                                     .catch((err) => { console.log(err) })
                                 }}>
                                     <div className='imgs'>
-                                        <img
+                                        {item && (<img
                                             src={item.imageLink}
                                             alt="hii"
-                                        />
+                                        />)}
                                     </div>
                                     <div className='heading-description'>
-                                        <h2>{item.heading}</h2>
-                                        <p>{item.description}</p>
+                                        {item && (<><h2>{item.heading}</h2>
+                                        <p>{item.description}</p></>)}
                                     </div>
                                     <div>
                                         {loggedIn ? <button className='edit-btn' onClick={() => {
@@ -66,6 +66,8 @@ const Mystory = () => {
                     {console.log(story)}
                     <Carousel  /></div> 
                 : ""}
+                
+            
             </div><br></br><br></br>
         </div>
     );

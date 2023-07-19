@@ -2,6 +2,7 @@ import React, { useEffect,useState } from 'react';
 import axios from 'axios';
 import useStoryContext from "../../../hooks/useStoryContext";
 import Mystory from './Mystory';
+import { ToastContainer, toast } from "react-toastify";
 
 const AllMobileViewStories = () => {
 
@@ -12,6 +13,12 @@ const AllMobileViewStories = () => {
         .then((response)=>{
             setStoryIds(response.data.unique)
             setFirstSlide(response.data.array)
+            if(response.data.array.length == 0){
+                toast.error("Sorry you haven't added any story yet!!", {
+                    position: "top-center",
+                    autoClose: 1000,
+                    hideProgressBar: true,
+            })}
         })
         .catch((err)=>{console.log(err)})           
     },[change])
@@ -19,6 +26,7 @@ const AllMobileViewStories = () => {
     return (
         <div>
            <Mystory />
+           <ToastContainer />
         </div>
     );
 };

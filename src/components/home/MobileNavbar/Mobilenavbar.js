@@ -40,6 +40,7 @@ const Mobilenavbar = () => {
         localStorage.removeItem("token");
         setLoggedIn(false);
         setShowMobile(false);
+        navigate('/')
     };
 
     const onNavbarSignup = () => {
