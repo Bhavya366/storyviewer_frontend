@@ -32,6 +32,7 @@ const Form = (props) => {
             password,
         };
         try {
+            
             const response = await axios.post(`{BASEURL}/${props.mode}`, data);
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("isLogged",true);
