@@ -3,6 +3,9 @@ import "./Navbar.css";
 import useStoryContext from "../../../hooks/useStoryContext";
 import profile from '../../../assets/profile.png'
 import hamburger from '../../../assets/hamburger.png'
+import Vector from '../../../assets/Vector.png'
+import BASEURL from "../../../constants/base";
+
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
@@ -29,7 +32,7 @@ const Navbar = () => {
   const AddStory = () =>{
     let data={}
     data.user = user;
-    axios.post('https://swiptory-u41l.onrender.com/story',data,{
+    axios.post(`${BASEURL}/story`,data,{
 			headers: {
 			  authorization: `${localStorage.getItem("token")}`,
 		}}).then((response) => setId(response.data.id)).catch((err)=>console.log(err))
@@ -48,7 +51,8 @@ const Navbar = () => {
         {loggedIn ? 
           <div className="navbar-buttons">
             <button className="loggedin-register-button" onClick={()=>navigate('bookmark')}>
-              Bookmarks
+              <img src={Vector} alt="bookmark icon" className="bookmark-icon" />
+              &nbsp;Bookmarks
             </button>
             <button className="loggedin-register-button" onClick={AddStory}>
               Add Story

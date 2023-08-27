@@ -5,6 +5,7 @@ import useStoryContext from "../../hooks/useStoryContext";
 import AddStory from "../addForm/AddStory";
 import LoginPopup from '../home/Popup/LoginPopup';
 import { useMediaQuery } from 'react-responsive'
+import BASEURL from '../../constants/base';
 import axios from 'axios';
 import Carousel from '../home/carouselfolder/Carousel';
 
@@ -13,15 +14,14 @@ import './bookmark.css';
 const Bookmark = () => {
 
     const [slides,setSlides] = useState([]);
-    const {storyids,setCarousel,carousel,firstSlide,} = useStoryContext();
-    const [story,setStory] = useState([]);
+    const {storyids,setCarousel,carousel,firstSlide,setStory} = useStoryContext();
 
     const isDesktopOrLaptop = useMediaQuery({query: '(min-width: 1224px)'})
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
-
+    const user = localStorage.getItem("username")
     const { popup,AddFormPopup,loggedIn} = useStoryContext();
     useEffect(()=>{
-        axios.get("https://swiptory-u41l.onrender.com/slide/getbookmarks")
+        axios.get(`${BASEURL}/slide/getbookmarks/${user}`)
         .then((response)=>{
             setSlides(response.data)
         })
@@ -40,13 +40,9 @@ const Bookmark = () => {
             slides.map((item,index)=>{
                 return (
                     <div key={index} className='img-each-slide' style={{backgroundImage:`url(${item.imageLink})`}} onClick={()=>{
-                        axios.get(`https://swiptory-u41l.onrender.com/slide/getSlides?storyId=${item.storyId}`)
-                        .then((response)=>{
-                            setStory(response.data) 
+                            setStory(slides) 
                             setCarousel(true);               
-                        })
-                        .catch((err)=>{console.log(err)})
-                        }}>
+                    }}>
                         
                         <div className='imgs'>
                             <img 
@@ -63,7 +59,7 @@ const Bookmark = () => {
             })
             :""}
             </div>
-            {carousel ? <div className='carousel-class'><Carousel story={story}/></div>:""}     
+            {carousel ? <div className='carousel-class'><Carousel /></div>:""}     
         </div>
     );
 };

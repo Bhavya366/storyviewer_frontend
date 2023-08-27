@@ -8,44 +8,32 @@ import education from '../../../assets/education.jpg';
 import movies from '../../../assets/movies.jpeg';
 import Health from '../../../assets/Health.png';
 import All from '../../../assets/All.jpeg';
+import BASEURL from '../../../constants/base';
 
 const AllCategories = () => {
 
-    // images
     let lst = [food,movies,education,Health,travel];
-
-    const { selected,setSelected,setChange,change,active,foodRef,moviesRef,educationRef,healthRef,travelRef} = useStoryContext();
+    const { selected,setSelected,setChange,change} = useStoryContext();
     const [categories,setCategories] = useState([])
-    
-    const arr = []
+
     useEffect(()=>{
-        axios.get('https://swiptory-u41l.onrender.com/slide')
+        axios.get(`${BASEURL}/slide`)
         .then((response)=>setCategories(response.data.categories))
         .catch((err)=>{console.log(err)})
     },[])    
     
-    const handleScrollTo = (item)=>{
-        if(item === "food")
-        foodRef.current.scrollIntoView({behavior:"smooth"});
-        else if(item === "travel")
-        travelRef.current.scrollIntoView({behavior:"smooth"});
-        else if(item === "movies")
-        moviesRef.current.scrollIntoView({behavior:"smooth"});
-        else if(item === "education")
-        educationRef.current.scrollIntoView({behavior:"smooth"});
-        else if(item === "health and fitness")
-        healthRef.current.scrollIntoView({behavior:"smooth"});
-    }
+  
 
     return (
         <div className='all-categories'>
-                <div className={selected == 'All' ? "each-category-selected" : "each-category"} style={{backgroundImage:`url(${All})`,backgroundSize:'cover'}}>
+                <div className={selected == 'All' ? "each-category-selected" : "each-category"} style={{backgroundImage:`url(${All})`,backgroundSize:'cover'}} onClick={()=>{
+                    setSelected("All");
+                    setChange(!change)}}>
                 All
                 </div> 
                 {categories ? categories.map((item,index)=>{
                 return (
                 <div key={index}  onClick={()=>{
-                    handleScrollTo(item)
                     setSelected(item);
                     setChange(!change)}} className={selected == item ? "each-category-selected" : "each-category"} style={{backgroundImage:`url(${lst[index]})`,backgroundSize:'cover'}}>
                     {item}

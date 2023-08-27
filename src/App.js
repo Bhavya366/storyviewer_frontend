@@ -6,15 +6,16 @@ import Bookmark from './components/bookmarksfolder/Bookmark';
 import AllMobileViewStories from './components/home/MobileNavbar/AllMobileViewStories';
 import Notfound from './components/notfound/Notfound';
 import Health from './components/health/Health';
+import SharedCarousel from './components/sharedCarousel/SharedCarousel'
 
 function App() {
   return (
-    <div>
       <Provider>
         <div className="App">
           <Router>
             <Routes>
               <Route path="/" element={<MainPage />} />
+              <Route path="/carousel" element = {<SharedCarousel />} />
               <Route path="/bookmark" element = {<Bookmark />}  />
               <Route path="/mystory" element = {<AllMobileViewStories/>} />
               <Route path="/health" element={<Health />} />
@@ -23,7 +24,6 @@ function App() {
           </Router>
         </div>
       </Provider>
-    </div>
   );
 }
 

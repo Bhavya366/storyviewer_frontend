@@ -3,15 +3,17 @@ import './AddStory.css';
 import useStoryContext from "../../hooks/useStoryContext";
 import axios from 'axios'
 import { ToastContainer, toast } from "react-toastify";
+import BASEURL from "../../constants/base";
 const categories = ["food", "health and fitness", "travel", "movies", "education"];
 
 const AddStory = () => {
 
-	const { setPopup, id, setId,change,setChange } = useStoryContext();
+	const { setPopup, id, setId,setChange } = useStoryContext();
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const [formData, setFormData] = useState([]);
-	const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+	// const [innerWidth, setInnerWidth] = useState(window.innerWidth);
 	const [slides, setSlides] = useState([1, 2, 3])
+	// let username = 
 
 	const handleInputChange = (event, currentSlide) => {
 		const { name, value } = event.target;
@@ -38,11 +40,8 @@ const AddStory = () => {
 
 	const handleSubmit = () => {
 
-		
-		console.log(formData);
+		let username = localStorage.getItem("username")
 		let data = {}
-		console.log(currentSlide)
-		console.log(id)
 		if (currentSlide === 0) {
 			data = {
 				storyId: id,
@@ -50,6 +49,7 @@ const AddStory = () => {
 				category: formData[currentSlide].category_0,
 				imageLink: formData[currentSlide].imageLink_0,
 				description: formData[currentSlide].description_0,
+				
 			}
 		}
 		else if (currentSlide === 1) {
@@ -59,6 +59,7 @@ const AddStory = () => {
 				category: formData[currentSlide].category_1,
 				imageLink: formData[currentSlide].imageLink_1,
 				description: formData[currentSlide].description_1,
+				
 			}
 		}
 		else if (currentSlide === 2) {
@@ -68,6 +69,7 @@ const AddStory = () => {
 				category: formData[currentSlide].category_2,
 				imageLink: formData[currentSlide].imageLink_2,
 				description: formData[currentSlide].description_2,
+				
 			}
 		}
 		else if (currentSlide ===3) {
@@ -77,6 +79,7 @@ const AddStory = () => {
 				category: formData[currentSlide].category_3,
 				imageLink: formData[currentSlide].imageLink_3,
 				description: formData[currentSlide].description_3,
+				
 			}
 		}
 		else if (currentSlide === 4) {
@@ -86,6 +89,7 @@ const AddStory = () => {
 				category: formData[currentSlide].category_4,
 				imageLink: formData[currentSlide].imageLink_4,
 				description: formData[currentSlide].description_4,
+				
 			}
 		}
 		else if (currentSlide === 5) {
@@ -97,14 +101,19 @@ const AddStory = () => {
 				description: formData[currentSlide].description_5,
 			}
 		}
-
+		data.user = username
+		data.bookedBy = []
+		data.likedBy = []
+		data.likeCount = 0
+		data.bookmark = false
 		try {
 			if (
 				!data.storyId ||
 				!data.heading ||
 				!data.category ||
 				!data.imageLink ||
-				!data.description
+				!data.description||
+				!data.user
 			) {
 				toast.error("Please fill all the fields", {
 					position: "top-center",
@@ -112,7 +121,7 @@ const AddStory = () => {
 				});
 				return;
 			}
-			 axios.post(`https://swiptory-u41l.onrender.com/slide`, data, {
+			 axios.post(`${BASEURL}/slide`, data, {
 				headers: {
 					authorization: `${localStorage.getItem("token")}`,
 				},
@@ -170,7 +179,7 @@ return (
 				<div className="n-slides">{
 					slides.map((item, index) => {
 						return (
-							<div key={index} className={currentSlide == index ? "each-slide-selected" : "each-slide"}>
+							<div key={index} className={currentSlide === index ? "each-slide-selected" : "each-slide"}>
 								<h4 >Slide {item} </h4>
 							</div>)
 					})}
@@ -212,19 +221,21 @@ return (
 					</div><br></br>
 					<div className="label-input">
 						<div style={{ width: "30%" }}><h3>Category:</h3></div>
-						<div className="inputs-form"><select
+						<div className="inputs-form">
+						<select
 							className="addstory-inputs"
 							name={`category_${currentSlide}`}
-							value={slideData[`category_${currentSlide}`] || categories[0]}
 							onChange={(e) => handleInputChange(e, currentSlide)}
 						>
-							<option>Select</option>
+							<option >Select</option>
 							{categories.map((category) => (
 								<option key={category} value={category}>
 									{category}
 								</option>
 							))}
-						</select></div>
+						</select>
+						
+						</div>
 					</div>
 				</form></div>
 			<div className="addstory-form-buttons">

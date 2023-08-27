@@ -1,30 +1,30 @@
-import React, { useRef, useState,useEffect } from "react";
-import gt from './gt.png';
+import React, { useState} from "react";
+import gt from './gt.png'
 import lt from './lt.png';
-import "./Carousel.css";
-import useStoryContext from "../../../hooks/useStoryContext";
+import "./SharedCarousel.css";
+import useStoryContext from "../../hooks/useStoryContext";
 import axios from 'axios';
-import BASEURL from "../../../constants/base";
 import { useNavigate } from "react-router-dom";
-import { useMediaQuery } from 'react-responsive';
+import BASEURL from "../../constants/base";
 
-const Carousel = (props) => {
+const SharedCarousel = (props) => {
 
+    
     const navigate = useNavigate();
-    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+
     const user = localStorage.getItem("username")
     
     const [slide, setSlide] = useState(0);
-    const { setCarousel,story,loggedIn,setLogginPopUp,setPopup,setRegisterPopUp,change,setChange,setStory} = useStoryContext();
-    const [data, setData] = useState(story)
+    const { setCarousel,loggedIn,setLogginPopUp,setPopup,setRegisterPopUp,change,setChange} = useStoryContext();
+    const [data, setData] = useState(JSON.parse(localStorage.getItem("sharedStories")))
     const [ClipboardMessage, setClipboardMessage] = useState(false);
-    const [ClickedBookmark, setClickedBookmark] = useState(data[slide].bookedBy && data[slide].bookedBy.length > 0 && data[slide].bookedBy.indexOf(user) == -1);
-    const [ClickedLike, setClickedLike] = useState(data[slide].likedBy && data[slide].likedBy.length > 0 && data[slide].likedBy.indexOf(user) == -1) ;
+    const [ClickedBookmark, setClickedBookmark] = useState(data[slide].bookedBy && data[slide].bookedBy.length > 0 && data[slide].bookedBy.indexOf(user) === -1);
+    const [ClickedLike, setClickedLike] = useState(data[slide].likedBy && data[slide].likedBy.length > 0 && data[slide].likedBy.indexOf(user) === -1) ;
     
 
     const increase_decrease_Like = () => {
         try {
-            const response = axios.put(`${BASEURL}/slide/${data[slide]._id}/like/${user}`)  
+            axios.put(`${BASEURL}/slide/${data[slide]._id}/like/${user}`)  
                 .then((response) => {
                     setData([
                         ...data.slice(0, slide),
@@ -40,7 +40,7 @@ const Carousel = (props) => {
     
     const setBooked = ()=>{
         try {
-            const response = axios.put(`${BASEURL}/slide/${data[slide]._id}/bookmarks/${user}`)
+            axios.put(`${BASEURL}/slide/${data[slide]._id}/bookmarks/${user}`)
                 .then((response) => { 
                     setData([
                         ...data.slice(0, slide),
@@ -53,7 +53,6 @@ const Carousel = (props) => {
             console.log(error);
         }
     }
-    
     const nextSlide = () => {
         setSlide(slide === data.length - 1 ? 0 : slide + 1);
         setClipboardMessage(false);
@@ -65,8 +64,9 @@ const Carousel = (props) => {
     };
 
     return (
+        <div className='carousel-class'>
         <div className="main-container">
-            <p  onClick={prevSlide} className="arrow-left" >
+            <p className="arrow arrow-left" onClick={prevSlide}>
                 <img src={lt} alt="" />
             </p>
             <div className="carousel">
@@ -91,11 +91,9 @@ const Carousel = (props) => {
 
                     {data ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" onClick={
                         () => {
-                            let link = window.location.href+`carousel`
-                            localStorage.setItem("sharedStories",JSON.stringify(story));
+                            let link = window.location.href+`carousel/${data[slide]._id}`
+
                             localStorage.setItem("ShareID",data[slide]._id);
-                            const index = data.indexOf(data.filter((item,index)=> data[slide]._id == item._id)[0])
-                            localStorage.setItem("index",index)
                             navigator.clipboard.writeText(link);
                             setClipboardMessage(true)
                         }}>
@@ -121,7 +119,7 @@ const Carousel = (props) => {
                             }
                             
                             }}>
-                            <path d="M19.1795 24.5071L9.58974 17.3148L0 24.5071V0H19.1795V24.5071Z" fill={data[slide].bookedBy && data[slide].bookedBy.indexOf(user) != -1 ? "blue" : "white"} />
+                            <path d="M19.1795 24.5071L9.58974 17.3148L0 24.5071V0H19.1795V24.5071Z" fill={data[slide].bookedBy && data[slide].bookedBy.indexOf(user) !== -1 ? "blue" : "white"} />
                         </svg>
                         <div className="likes"><svg xmlns="http://www.w3.org/2000/svg" width="29" height="27" viewBox="0 0 29 27" fill="red" onClick={() => {
                             if(loggedIn){
@@ -136,7 +134,7 @@ const Carousel = (props) => {
                             }
                             
                         }}>
-                            <path d="M14.207 26.0699L12.147 24.1946C4.83039 17.5599 0 13.1699 0 7.81387C0 3.42389 3.4381 0 7.81386 0C10.2859 0 12.6585 1.15077 14.207 2.95506C15.7556 1.15077 18.1282 0 20.6002 0C24.976 0 28.4141 3.42389 28.4141 7.81387C28.4141 13.1699 23.5837 17.5599 16.267 24.1946L14.207 26.0699Z" fill={data[slide].likedBy && data[slide].likedBy.indexOf(user) != -1 ? "red" : "white"} />
+                            <path d="M14.207 26.0699L12.147 24.1946C4.83039 17.5599 0 13.1699 0 7.81387C0 3.42389 3.4381 0 7.81386 0C10.2859 0 12.6585 1.15077 14.207 2.95506C15.7556 1.15077 18.1282 0 20.6002 0C24.976 0 28.4141 3.42389 28.4141 7.81387C28.4141 13.1699 23.5837 17.5599 16.267 24.1946L14.207 26.0699Z" fill={data[slide].likedBy && data[slide].likedBy.indexOf(user) !== -1 ? "red" : "white"} />
                         </svg>
                             {data[slide].likeCount}</div>
                     </div>
@@ -152,13 +150,14 @@ const Carousel = (props) => {
                         />
                     );
                 })}
+
             </div>
-            <p onClick={nextSlide} className="arrow-right">
+            <p onClick={nextSlide} className="arrow arrow-right">
                 <img src={gt} alt="" />
             </p>
 
-        </div>
+        </div></div>
     );
 };
 
-export default Carousel
+export default SharedCarousel

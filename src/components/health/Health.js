@@ -3,7 +3,7 @@ import "./Health.css";
 import Loading from "../loading/Loading";
 import axios from "axios";
 import Notfound from "../notfound/Notfound";
-
+import BASEURL from "../../constants/base";
 
 const Health = () => {
   const [healthData, setHealthData] = useState(null);
@@ -12,7 +12,7 @@ const Health = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`https://swiptory-u41l.onrender.com/health`)
+      .get(`${BASEURL}/health`)
       .then((res) => {
         setHealthData(res.data);
       })

@@ -6,19 +6,19 @@ import AddStory from "../addForm/AddStory";
 import LoginPopup from "./Popup/LoginPopup";
 import AllStories from "./stories/AllStories";
 import AllCategories from "./storyCategories/AllCategories";
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from 'react-responsive';
 import EditStory from "../editform/EditStory";
-import MainCategory from "./foodCategory/MainCategory";
+import MainCategory from "./Category/MainCategory";
 
 const MainPage = () => {
+
   const isDesktopOrLaptop = useMediaQuery({query: '(min-width: 1224px)'})
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+  const { popup,AddFormPopup,loggedIn,edit,selected} = useStoryContext();
 
-  const { popup,AddFormPopup,loggedIn,edit} = useStoryContext();
-  
   return (
 
-    <div className="homepage">
+    <>
       {isDesktopOrLaptop ?<Navbar />:""}
       {isTabletOrMobile ?<Mobilenavbar />:""}
       {popup?<LoginPopup />:""} 
@@ -29,8 +29,7 @@ const MainPage = () => {
         <AllStories />
       </>:""}
       <MainCategory />
-      
-    </div>
+    </>
 
   );
 };

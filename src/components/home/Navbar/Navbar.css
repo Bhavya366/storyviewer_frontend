@@ -46,9 +46,17 @@ button{
   }
 
   .loggedin-register-button{
+    display: flex;
+    align-items: center;
     background-color: #FF7373;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
   }
-  
+  .loggedin-register-button img{
+    width:12px;
+    height:15px;
+  }
   .logout{
     background-color: white;
     padding: 20px;

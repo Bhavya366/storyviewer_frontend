@@ -1,39 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import axios from 'axios';
 import useStoryContext from "../../../hooks/useStoryContext";
-import Carousel from '../carouselfolder/Carousel'
+import BASEURL from '../../../constants/base';
 import EditStory from '../../editform/EditStory';
 import Mobilenavbar from './Mobilenavbar';
+import { useMediaQuery } from 'react-responsive';
 
 const Mystory = () => {
 
-    const { setCarousel, carousel, firstSlide, loggedIn, edit, setEdit ,story,setStory} = useStoryContext();
-    
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+    const {carousel, firstSlide, loggedIn, edit, setEdit } = useStoryContext();
     const [datatoEdit, setDatatoEdit] = useState([]);
     
     return (
         <div>
-            <Mobilenavbar /><br></br><br></br>
-            <center><h2>Your Stories</h2></center>
+            {isTabletOrMobile ?<><Mobilenavbar /><br></br><br></br></>:"" }
+            <center><h2>Your Stories</h2></center><br></br>
             <div className='all-firstslides'>
                 {firstSlide ? 
                     firstSlide.map((item, index) => {
                         return (
                             <div key={index}>
-                                <div className='img-each-firstslide' onClick={() => {
-                                    axios.get(`https://swiptory-u41l.onrender.com/slide/getSlides?storyId=${item.storyId}`)
-                                        .then((response) => {
-                                            setStory(response.data)
-                                            setCarousel(true);
-                                            if (edit) {
-                                                setCarousel(false);
-                                            }
-                                            if (carousel) {
-                                                setEdit(true);
-                                            }
-                                        })
-                                    .catch((err) => { console.log(err) })
-                                }}>
+                                <div className='img-each-firstslide' >
                                     <div className='imgs'>
                                         {item && (<img
                                             src={item.imageLink}
@@ -45,13 +33,11 @@ const Mystory = () => {
                                         <p>{item.description}</p></>)}
                                     </div>
                                     <div>
-                                        {loggedIn ? <button className='edit-btn' onClick={() => {
-                                            setEdit(true)
-                                            setCarousel(false);                                            
-                                            axios.get(`https://swiptory-u41l.onrender.com/slide/getSlides?storyId=${item.storyId}`)
+                                        {loggedIn ? <button className='edit-btn' onClick={() => {                                           
+                                            axios.get(`${BASEURL}/slide/getSlides?storyId=${item.storyId}`)
                                                 .then((response) => {
                                                     setDatatoEdit(response.data)
-                                                    setCarousel(false);
+                                                    setEdit(true)
                                                 })
                                                 .catch((err) => { console.log(err) })
                                         }} >Edit</button>:""}
@@ -61,13 +47,7 @@ const Mystory = () => {
                         )
                     })
                     : ""}
-                {edit && datatoEdit.length > 0 ? <EditStory data={datatoEdit} /> : ''}
-                {(carousel && edit==false) ? <div className='carousel-class'>
-                    {console.log(story)}
-                    <Carousel  /></div> 
-                : ""}
-                
-            
+                {edit && datatoEdit.length > 0 && !carousel ? <EditStory data={datatoEdit} /> : ''}
             </div><br></br><br></br>
         </div>
     );

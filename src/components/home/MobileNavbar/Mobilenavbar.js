@@ -2,13 +2,15 @@ import React, { useState,useEffect } from 'react';
 import hamburger from '../../../assets/hamburger.png'
 import useStoryContext from "../../../hooks/useStoryContext";
 import profile from '../../../assets/profile.png';
+import Vector from '../../../assets/Vector.png';
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
+import BASEURL from '../../../constants/base';
 
 const Mobilenavbar = () => {
 
     const [showMobile, setShowMobile] = useState(false);
-    const { loggedIn, setLoggedIn, popup, setPopup, RegisterPopUp, setRegisterPopUp, LogginPopUp, setLogginPopUp, user, setUser, logout, setLogout,id ,setAddFormPopup,setId} = useStoryContext();
+    const { loggedIn, setLoggedIn, setPopup,setRegisterPopUp,setLogginPopUp, user,setAddFormPopup,setId} = useStoryContext();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,7 +28,7 @@ const Mobilenavbar = () => {
     const AddStory = () =>{
         let data={}
         data.user = user;
-        axios.post('https://swiptory-u41l.onrender.com/story',data,{
+        axios.post(`${BASEURL}/story`,data,{
 			headers: {
 			  authorization: `${localStorage.getItem("token")}`,
 		}}).then((response) => setId(response.data.id)).catch((err)=>console.log(err))
@@ -38,6 +40,8 @@ const Mobilenavbar = () => {
       }
     const logoutHeader = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("isLogged");
+        localStorage.removeItem("username");
         setLoggedIn(false);
         setShowMobile(false);
         navigate('/')
@@ -69,7 +73,7 @@ const Mobilenavbar = () => {
                     <span>{user}</span>
                     <div className="mobile-into" onClick={() => { setShowMobile(false) }}>x</div>
                 </div>
-                
+                <center>
                 <button className="loggedin-register-button" onClick={()=>navigate('mystory')}>
                     Your Story
                 </button><br></br>
@@ -77,12 +81,14 @@ const Mobilenavbar = () => {
                     Add Story
                 </button><br></br>
                 <button className="loggedin-register-button" onClick={()=>navigate('bookmark')}>
+                <img src={Vector} alt="bookmark icon" className="bookmark-icon" />
+              &nbsp;
                     Bookmarks
                 </button><br></br>
                 <button className="loggedin-register-button" onClick={logoutHeader}>
                     Logout
                 </button>
-                
+                </center>
             </div> : ""}
         </>
     );

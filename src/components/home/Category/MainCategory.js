@@ -1,52 +1,35 @@
-import React, { useEffect, useState ,forwardRef} from 'react';
-import useStoryContext from '../../../hooks/useStoryContext'
+import React,{useEffect,useState} from 'react';
 import axios from 'axios';
-import Carousel from '../carouselfolder/Carousel'
-import './foodcategory.css';
+import useStoryContext from '../../../hooks/useStoryContext';
+import Carousel from '../carouselfolder/Carousel';
+import './MainCategory.css';
+import BASEURL from '../../../constants/base';
 
-const Foodrelated = forwardRef((props,ref) => {
+const MainCategory = () => {
 
     const [slides, setSlides] = useState([]);
-    const { setCarousel, carousel,setFood, setMovies, setTravel, setEducation, setHealth, setStory } = useStoryContext();
-    const [carouselData, setCarouselData] = useState([]);
-    const [seemore, setSeemore] = useState(false);
-
+    const { setCarousel, carousel, selected,change,setStory,story} = useStoryContext();
+    const [seemore,setSeemore] = useState(false);
     useEffect(() => {
-        axios.get(`https://swiptory-u41l.onrender.com/slide/getFilteredCategory?category=${props.category}`)
+        axios.get(`${BASEURL}/slide/getFilteredCategory?category=${selected}`)
             .then((response) => {
                 setSlides(response.data.slide);
             })
-            .catch((err) => { console.log(err) })
-        if (props.category === 'food')
-            setFood(slides);
-        else if (props.category === 'movies')
-            setMovies(slides);
-        else if (props.category === 'travel')
-            setTravel(slides);
-        else if (props.categroy === 'education')
-            setEducation(slides)
-        else
-            setHealth(slides)
-    }, [])
+            .catch((err) => { console.log("error") })
+    }, [change])
 
     return (
-        <div ref={ref}>
+        <div>
             {seemore ? <div><br></br><br></br>
-                <center><h2>Your Top stories on {props.category}</h2></center><br></br><br></br>
+                {selected === "All"?<center><h2>Your Top stories on {selected} categories</h2></center>:<center><h2>Your Top stories on {selected}</h2></center>}
+                <br></br><br></br>
                 <div className='all-firstslides'>
                     {slides ?
                         slides.map((item, index) => {
                             return (
                                 <div key={index} className='img-each-firstslide' style={{ backgroundImage: `url(${item.imageLink})` }} onClick={() => {
-                                    axios.get(`https://swiptory-u41l.onrender.com/slide/getFilteredCategory?category=${item.category}`)
-                                        .then((response) => {
-
-                                            console.log(response.data.slide);
-                                            setStory(response.data.slide);
-                                            setCarouselData(response.data.slide);
-                                            setCarousel(true);
-                                        })
-                                        .catch((err) => { console.log(err) })
+                                    setStory(slides)
+                                    setCarousel(true);
                                 }}>
                                     <div className='imgs'>
                                         <img
@@ -65,22 +48,16 @@ const Foodrelated = forwardRef((props,ref) => {
                 </div>
                 {(carousel) ? <div className='carousel-class'><Carousel /></div> : ""}
             </div> :
-                <div className="homepage"><br></br><br></br>
-                    <center><h2>Your Top stories on {props.category}</h2></center><br></br><br></br>
+                <div><br></br><br></br>
+                    {selected === "All"?<center><h2>Your Top stories on {selected} categories</h2></center>:<center><h2>Your Top stories on {selected}</h2></center>}
+                <br></br><br></br>
                     <div className='all-firstslides'>
                         {slides ?
                             (slides.slice(0, 3)).map((item, index) => {
                                 return (
                                     <div key={index} className='img-each-firstslide' style={{ backgroundImage: `url(${item.imageLink})` }} onClick={() => {
-                                        axios.get(`https://swiptory-u41l.onrender.com/slide/getFilteredCategory?category=${item.category}`)
-                                            .then((response) => {
-
-                                                console.log(response.data.slide);
-                                                setStory(response.data.slide);
-                                                setCarouselData(response.data.slide);
-                                                setCarousel(true);
-                                            })
-                                            .catch((err) => { console.log(err) })
+                                        setStory(slides)
+                                        setCarousel(true);
                                     }}>
                                         <div className='imgs'>
                                             <img
@@ -102,8 +79,6 @@ const Foodrelated = forwardRef((props,ref) => {
                 </div>
             }</div>
     );
-});
+};
 
-export default Foodrelated;
-
-//
+export default MainCategory;

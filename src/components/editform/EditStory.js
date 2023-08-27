@@ -3,10 +3,11 @@ import './EditStory.css';
 import useStoryContext from "../../hooks/useStoryContext";
 import axios from 'axios'
 import { ToastContainer, toast } from "react-toastify";
+import BASEURL from "../../constants/base";
 const categories = ["food", "health and fitness", "travel", "movies", "education"];
 
 const EditStory = (props) => {
-	const { setPopup, id, setId, setEdit,setCarousel,setChange,change } = useStoryContext();
+	const { setPopup, setId, setEdit,setCarousel,setChange,change } = useStoryContext();
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const [formData, setFormData] = useState(props.data);
 	const [slides, setSlides] = useState() 
@@ -19,8 +20,8 @@ const EditStory = (props) => {
 	
 	const handleInputChange = (event, currentSlide) => {
 		event.preventDefault()
-		const { name,value } = event.target;
-		console.log(event.target.value);
+		const { name} = event.target;
+	
 		const updatedFormData = [...formData];
 		updatedFormData[currentSlide] = {
 			...updatedFormData[currentSlide],
@@ -39,7 +40,6 @@ const EditStory = (props) => {
 	};
 
 	const deletePopup = () => {
-		
 		setPopup(false);
 		setEdit(false);
 		setCarousel(false);
@@ -49,14 +49,20 @@ const EditStory = (props) => {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		let data = {}
-		
+		let username = localStorage.getItem("username")
 		data.storyId = slideData.storyId;
 		data._id = slideData._id;
 		data.heading = slideData.heading;
 		data.description = slideData.description;
 		data.imageLink = slideData.imageLink;
 		data.category = slideData.category;
-		console.log(data)
+		
+		data.user = username
+		data.bookedBy = []
+		data.likedBy = []
+		data.likeCount = 0
+		data.bookmark = false
+
 		try {
 			if (
 				!data.storyId ||
@@ -71,8 +77,8 @@ const EditStory = (props) => {
 				});
 				return;
 			}
-			console.log(data)
-			axios.put(`https://swiptory-u41l.onrender.com/slide`, data, {
+			
+			axios.put(`${BASEURL}/slide`, data, {
 				headers: {
 					authorization: `${localStorage.getItem("token")}`,
 				},
@@ -129,7 +135,7 @@ return (
 				<div className="n-slides">
 					{slides ? slides.map((item, index) => {
 						return (
-							<div key={index} className={currentSlide == index ? "each-slide-selected" : "each-slide"}>
+							<div key={index} className={currentSlide === index ? "each-slide-selected" : "each-slide"}>
 								<h4 >Slide {item} </h4>
 							</div>)
 					}):''}
@@ -172,7 +178,8 @@ return (
 					</div><br></br>
 					<div className="label-input">
 						<div style={{ width: "30%" }}><h3>Category:</h3></div>
-						<div className="inputs-form"><select
+						<div className="inputs-form">
+						<select
 							className="addstory-inputs"
 							name="category"
 							onChange={(e) => handleInputChange(e, currentSlide)}

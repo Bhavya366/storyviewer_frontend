@@ -4,9 +4,13 @@ import { ToastContainer, toast } from "react-toastify";
 import passwordlock from '../../assets/passwordlock.png'
 import "react-toastify/dist/ReactToastify.css";
 import useStoryContext from "../../hooks/useStoryContext";
+import { useMediaQuery } from 'react-responsive';
 import './Form.css';
+import BASEURL from "../../constants/base";
 
 const Form = (props) => {
+
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
     const [update,setUpdate] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -28,9 +32,11 @@ const Form = (props) => {
             password,
         };
         try {
-            const response = await axios.post(`https://swiptory-u41l.onrender.com/${props.mode}`, data);
+            const response = await axios.post(`{BASEURL}/${props.mode}`, data);
             localStorage.setItem("token", response.data.token);
-            console.log(response.data)
+            localStorage.setItem("isLogged",true);
+            localStorage.setItem("username",response.data.username);
+            
             setChange(!change)
             toast.success(`${props.text} Successfull`, {
                 position: "top-center",
@@ -43,8 +49,8 @@ const Form = (props) => {
             }, 1000);
 
         } catch (err) {
-            console.log(err)
-            if (err.response.status != 201 || err.response.status != 200) {
+            
+            if (err.response.status !== 201 || err.response.status !== 200) {
                 toast.error("Invalid Credentials", {
                     position: "top-center",
                     autoClose: 1000,
@@ -66,7 +72,8 @@ const Form = (props) => {
             <h3>{props.text} to SwipTory</h3><br></br><br></br>
             <form className="login-form">
                 <div className="inputs">
-                    <h4>Username</h4>
+                    
+                    {isTabletOrMobile ? <><h4>Username</h4><br></br></>:<h4>Username</h4>}
                     <input
                         value={username}
                         onChange={handleusernameChange}
@@ -76,16 +83,16 @@ const Form = (props) => {
                     />
                 </div><br></br><br></br>
                 <div className="inputs">
-                    <h4>Password</h4>
+                {isTabletOrMobile ? <><h4>Password</h4><br></br></>:<h4>Password</h4>}
                     <div className="input_lock">
                     <input
                         value={password}
                         onChange={handlePassowrdChange}
-                        type={update?"text":"password"}
+                        type={update? "text":"password"}
                         placeholder="Enter password"
                         required
                     /><br></br>
-                    <img src={passwordlock} alt=""  onClick={()=>setUpdate(true)}/>
+                    <img src={passwordlock} alt=""  onClick={()=>setUpdate(!update)}/>
                     </div>
                     
                 </div><br></br>
