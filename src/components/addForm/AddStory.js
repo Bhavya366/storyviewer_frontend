@@ -8,7 +8,7 @@ const categories = ["food", "health and fitness", "travel", "movies", "education
 
 const AddStory = () => {
 
-	const { setPopup, id, setId,setChange } = useStoryContext();
+	const { setPopup, id, setId,setChange,change } = useStoryContext();
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const [formData, setFormData] = useState([]);
 	// const [innerWidth, setInnerWidth] = useState(window.innerWidth);
@@ -126,7 +126,7 @@ const AddStory = () => {
 					authorization: `${localStorage.getItem("token")}`,
 				},
 			}).then((response)=>{
-				setChange(true);
+				setChange(!change);
 				toast.success("Slide Added Successfully", {
 				position: "top-center",
 				autoClose: 1000,
@@ -223,9 +223,11 @@ return (
 						<div style={{ width: "30%" }}><h3>Category:</h3></div>
 						<div className="inputs-form">
 						<select
+
 							className="addstory-inputs"
 							name={`category_${currentSlide}`}
 							onChange={(e) => handleInputChange(e, currentSlide)}
+							
 						>
 							<option >Select</option>
 							{categories.map((category) => (
@@ -234,7 +236,6 @@ return (
 								</option>
 							))}
 						</select>
-						
 						</div>
 					</div>
 				</form></div>
